@@ -18,7 +18,7 @@ import { registerClinic, getOnboardingState } from "@/actions/onboarding-actions
 export default function OnboardingClinicPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoadingState, setIsLoadingState] = useState(true);
+  const [isLoadingState, setIsLoadingState] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
 

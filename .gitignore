@@ -36,3 +36,6 @@ next-env.d.ts
 # local postgres cluster
 /.pgdata
 /pg.log
+
+# local artifacts / raw visual captures
+/artifacts/
