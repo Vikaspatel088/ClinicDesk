@@ -168,3 +168,32 @@ The design system merges the authority and precision of traditional medical publ
 - **Editorial Headlines**: `DM Serif Display` — Used for marketing headers, report titles, and key value propositions.
 - **Interface & Content**: `Plus Jakarta Sans` — Crisp, legible geometric sans-serif for forms, tables, buttons, and navigation.
 - **Numerical & Technical Data**: `IBM Plex Mono` — Financial amounts (₹), token numbers, timestamps, vital signs, MRNs.
+
+
+---
+
+## 6. Authentication & Tenant Identity Engine (Phase 2 Implemented)
+
+### 6.1 Session Architecture
+- **Cryptographic Tokens**: Compact JSON Web Tokens (JWT) signed via HS256 using `jose` with minimum 256-bit entropy keys.
+- **Cookie Security**: HTTP-only, `SameSite=Lax`, secure cookies (`clinicdesk_session`) preventing client-side script inspection.
+- **Payload Schema**:
+  ```typescript
+  interface SessionUser {
+    id: string;
+    email: string;
+    name: string;
+    phone?: string | null;
+    clinicId?: string | null;
+    clinicName?: string | null;
+    clinicSlug?: string | null;
+    role?: MembershipRole | null;
+  }
+  ```
+- **Defense-in-Depth Authorization**: Middleware provides rapid Edge-level redirects for unauthenticated routes, while Server Components (`withAuthenticatedTenant`) re-verify active database membership against the database before executing any tenant-scoped transactions.
+
+### 6.2 PostgreSQL Role Isolation
+- **Application Role**: All application database queries execute under the non-superuser role `clinicdesk_app`.
+- **Strict `NOBYPASSRLS`**: Unlike the PostgreSQL superuser, `clinicdesk_app` is subject to all `ENABLE ROW LEVEL SECURITY` and `FORCE ROW LEVEL SECURITY` policies.
+- **Admin Role**: Administrative migrations and schema definitions use `DIRECT_URL` under the administrative role.
+- **Transaction Scoping (`SET LOCAL`)**: Tenant scoping executes via `SET LOCAL app.current_clinic_id = '<clinicId>'` inside transaction blocks, guaranteeing that connection pooling cannot leak tenant state across requests.
