@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #F5F7F4; /* Paper White */
+    --foreground: #102B3B; /* Midnight Navy */
+
+    --card: #FFFFFF;
+    --card-foreground: #102B3B;
+
+    --popover: #FFFFFF;
+    --popover-foreground: #102B3B;
+
+    --primary: #102B3B;
+    --primary-foreground: #F5F7F4;
+
+    --secondary: #18B7A4;
+    --secondary-foreground: #FFFFFF;
+
+    --muted: #E6ECE9; /* Mist */
+    --muted-foreground: #5B7584; /* Ink Muted */
+
+    --accent: #18B7A4; /* Clinic Teal */
+    --accent-foreground: #FFFFFF;
+
+    --destructive: #ED786B; /* Coral */
+    --destructive-foreground: #FFFFFF;
+
+    --border: #D3DCD8;
+    --input: #D3DCD8;
+    --ring: #18B7A4;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: #091A24;
+    --foreground: #F5F7F4;
+
+    --card: #102B3B;
+    --card-foreground: #F5F7F4;
+
+    --popover: #102B3B;
+    --popover-foreground: #F5F7F4;
+
+    --primary: #18B7A4;
+    --primary-foreground: #091A24;
+
+    --secondary: #243D48;
+    --secondary-foreground: #F5F7F4;
+
+    --muted: #1E4154;
+    --muted-foreground: #8FA3AE;
+
+    --accent: #18B7A4;
+    --accent-foreground: #091A24;
+
+    --destructive: #ED786B;
+    --destructive-foreground: #FFFFFF;
+
+    --border: #1E4154;
+    --input: #1E4154;
+    --ring: #18B7A4;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased selection:bg-teal-200 selection:text-midnight;
+  }
+  h1, h2, h3, .font-serif {
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
