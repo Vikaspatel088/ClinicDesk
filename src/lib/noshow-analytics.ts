@@ -101,3 +101,81 @@ export function estimateRecoveredValue(comparison: ComparisonPeriod): EstimatedI
       "Estimated recovered appointments and revenue represent observational correlation following reminder system activation. External factors such as seasonal patient volume and day-of-week variation may also influence attendance.",
   };
 }
+
+// -----------------------------------------------------------------------------
+// Interactive Clinic Revenue Calculator Engine
+// -----------------------------------------------------------------------------
+
+export interface CalculatorInputs {
+  weeklyAppointments: number;
+  currentNoShowRatePercent: number;
+  avgConsultationFeeINR: number;
+  expectedRelativeReductionPercent: number;
+  monthlyReminderCostINR: number;
+}
+
+export interface CalculatorOutputs {
+  monthlyAppointments: number;
+  currentMissedAppointments: number;
+  appointmentsAvoided: number;
+  associatedRevenueINR: number;
+  netOpportunityINR: number;
+  effectiveNoShowRatePercent: number;
+  isCostPositive: boolean;
+  causalityDisclaimer: string;
+}
+
+export const DEFAULT_CALCULATOR_INPUTS: CalculatorInputs = {
+  weeklyAppointments: 120,
+  currentNoShowRatePercent: 24,
+  avgConsultationFeeINR: 600,
+  expectedRelativeReductionPercent: 40,
+  monthlyReminderCostINR: 950,
+};
+
+export const CALCULATOR_DISCLAIMER =
+  "These are scenario estimates based on your inputs, not guaranteed outcomes. Actual results vary by clinic, patient behavior, reminder delivery and operational factors. Avoid interpreting the estimate as proven causal impact.";
+
+/**
+ * Calculates interactive practice revenue recovery scenario with safe bounds checking.
+ */
+export function calculateClinicScenario(rawInputs: CalculatorInputs): CalculatorOutputs {
+  // Safe normalization and bounds checking
+  const weeklyAppointments = Math.max(0, Number(rawInputs.weeklyAppointments) || 0);
+  const baselineRate = Math.min(100, Math.max(0, Number(rawInputs.currentNoShowRatePercent) || 0));
+  const avgFee = Math.max(0, Number(rawInputs.avgConsultationFeeINR) || 0);
+  const reductionRate = Math.min(100, Math.max(0, Number(rawInputs.expectedRelativeReductionPercent) || 0));
+  const reminderCost = Math.max(0, Number(rawInputs.monthlyReminderCostINR) || 0);
+
+  // Average monthly appointments = Weekly appointments * 4.33
+  const monthlyAppointments = Math.round(weeklyAppointments * 4.33);
+
+  // Current estimated missed appointments = Monthly appointments * (baseline / 100)
+  const currentMissedAppointments = Math.round(monthlyAppointments * (baselineRate / 100));
+
+  // Estimated appointments avoided = Monthly appointments * (baseline / 100) * (reduction / 100)
+  const appointmentsAvoided = Math.round(
+    monthlyAppointments * (baselineRate / 100) * (reductionRate / 100)
+  );
+
+  // Estimated associated revenue = Estimated appointments avoided * average consultation fee
+  const associatedRevenueINR = appointmentsAvoided * avgFee;
+
+  // Estimated net opportunity = Associated revenue - reminder cost
+  const netOpportunityINR = associatedRevenueINR - reminderCost;
+
+  // Effective no-show rate under scenario = baseline * (1 - reduction / 100)
+  const effectiveNoShowRatePercent =
+    Math.round(baselineRate * (1 - reductionRate / 100) * 10) / 10;
+
+  return {
+    monthlyAppointments,
+    currentMissedAppointments,
+    appointmentsAvoided,
+    associatedRevenueINR,
+    netOpportunityINR,
+    effectiveNoShowRatePercent,
+    isCostPositive: netOpportunityINR >= 0,
+    causalityDisclaimer: CALCULATOR_DISCLAIMER,
+  };
+}

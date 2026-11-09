@@ -16,46 +16,60 @@ This document serves as the canonical execution roadmap across all phases of imp
 
 ## Phase Breakdown
 
-### Phase 0 — Foundation & Architecture (Current Phase)
+### Phase 0 — Foundation & Architecture (COMPLETED)
 - [x] Workspace inspection and runtime tooling verification (Node.js v26.1.0, npm 11.13.0, PostgreSQL 18.6 binaries, Git 2.55.0).
 - [x] Git repository initialization.
 - [x] Creation of comprehensive architecture, implementation, and progress documentation (`docs/ARCHITECTURE.md`, `docs/IMPLEMENTATION_PLAN.md`, `docs/PROGRESS.md`).
-- [ ] Initialize Next.js 15+ App Router application with TypeScript (strict mode enabled).
-- [ ] Configure Tailwind CSS with the **Clinical Editorial** design system palette:
+- [x] Initialize Next.js 15+ App Router application with TypeScript (strict mode enabled).
+- [x] Configure Tailwind CSS with the **Clinical Editorial** design system palette:
   - Midnight Navy: `#102B3B`
   - Clinic Teal: `#18B7A4`
   - Paper White: `#F5F7F4`
   - Mist: `#E6ECE9`
   - Coral: `#ED786B`
   - Ink: `#243D48`
-- [ ] Configure typography with Google Fonts optimization: `DM Serif Display`, `Plus Jakarta Sans`, and `IBM Plex Mono`.
-- [ ] Setup base UI component primitives (shadcn-compatible custom accessible components).
-- [ ] Author complete Prisma Schema covering all 18 core domain entities with UUIDs, foreign keys, indexes, and clinic tenant identifiers.
-- [ ] Implement database tenant context and PostgreSQL Row-Level Security (RLS) SQL policies and Prisma tenant context extension.
-- [ ] Provide comprehensive `.env.example` documenting all configuration keys.
-- [ ] Setup Vitest test runner and verify Phase 0 test harness.
+- [x] Configure typography with Google Fonts optimization: `DM Serif Display`, `Plus Jakarta Sans`, and `IBM Plex Mono`.
+- [x] Setup base UI component primitives (shadcn-compatible custom accessible components).
+- [x] Author complete Prisma Schema covering all 19 core domain entities with UUIDs, foreign keys, indexes, and clinic tenant identifiers.
+- [x] Implement database tenant context and PostgreSQL Row-Level Security (RLS) SQL policies and Prisma tenant context extension.
+- [x] Provide comprehensive `.env.example` documenting all configuration keys.
+- [x] Setup Vitest test runner and verify Phase 0 test harness.
 
 ---
 
-### Phase 1 — Marketing & Public Surface
-- [ ] Editorial marketing landing page (`/`):
-  - Hero with value proposition, clinical editorial typography, interactive schedule preview.
-  - Live ROI & No-Show calculator for Indian outpatient clinics (demonstrating loss per empty slot).
-  - Feature highlights: Smart booking, WhatsApp/SMS/Email reminders, Digital consultation pad, GST-ready billing.
-  - Interactive product tour carousel and testimonials from outpatient practitioners.
-- [ ] Secondary marketing pages:
-  - `/features` — Deep-dive on clinical notes, scheduling, queue management, billing.
-  - `/how-it-works` — 3-step clinic onboarding & daily front-desk workflow.
-  - `/no-show-report` — Deep-dive into ClinicDesk's signature intelligence methodology (before vs. after reminder delivery tracking, non-causal attribution transparency).
-  - `/pricing` — Transparent INR pricing tiers (Starter, Clinic, Multi-Doctor) with feature comparison.
-  - `/security` — Multi-tenant architecture, data residency, RLS enforcement, clinical audit logging.
-  - `/about` & `/contact` — Company story, clinical advisory council, support channels.
-  - `/demo` — Interactive guided sandbox access.
-- [ ] Global header, mobile navigation drawer, and editorial footer with status badge.
+### Phase 1 — Marketing Website & Signature Tour (COMPLETED)
+- [x] Editorial marketing landing page (`/`):
+  - Section 1: Navigation with brand mark and accessible mobile drawer (Escape key handling, ARIA dialog attributes).
+  - Section 2: Hero with value proposition ("Your clinic deserves better than a paper register"), clinical editorial typography, interactive schedule preview.
+  - Section 3: Honest trust positioning for independent Indian clinics (1–5 doctors), zero fabricated awards/endorsements.
+  - Section 4: Three real clinical pain points (missed appointments, scattered paper records, manual front desk chaos).
+  - Section 5: Six core product capability cards with deep-dive links.
+  - Section 6: Signature feature spotlight with before/after comparison chart and interactive revenue recovery calculator.
+  - Section 7: Six-step clinic workflow sequence (Booking $\rightarrow$ Reminder $\rightarrow$ Confirmation $\rightarrow$ Consultation $\rightarrow$ Invoice $\rightarrow$ Analytics).
+  - Section 8: Honest security architecture explaining PostgreSQL RLS dual-layer isolation.
+  - Section 9: Pricing preview with 3 tiers (Starter, Clinic, Multi-Doctor).
+  - Section 10: Final editorial CTA and compliant footer.
+- [x] Dedicated marketing subpages:
+  - [x] `/features` — Detailed capability breakdowns for scheduling, records, clinical notes, reminders, billing, no-show reports, and multi-doctor rosters.
+  - [x] `/how-it-works` — 8-step chronological timeline of a morning outpatient shift.
+  - [x] `/no-show-report` — Signature analytics page with before/after comparison, mathematical formulas, and the interactive calculator.
+  - [x] `/pricing` — 3 tiers (Starter, Clinic, Multi-Doctor), feature comparison matrix, FAQs, and monthly/annual toggle.
+  - [x] `/security` — Multi-tenant architecture, RLS explanation, RBAC matrix, audit log specs, truthful status of implemented vs pending controls.
+  - [x] `/about` — Mission, healthcare SaaS principles, why independent Indian practices need focused software.
+  - [x] `/contact` — Demo enquiry / contact form with validation, accessible field errors, and honest technical disclaimer.
+  - [x] `/demo` — Interactive tabbed product preview with synthetic clinic data, schedule, patient profile, clinical note, billing, and no-show reports.
+- [x] Interactive Clinic Revenue Calculator:
+  - Parameterized scenario inputs (weekly slots, baseline no-show %, avg consultation fee, expected relative reduction %, monthly reminder cost).
+  - Non-causal statistical disclaimers.
+  - 7 dedicated Vitest unit tests covering zero appointments, decimal percentages, boundary cases, and negative scenarios.
+- [x] SEO & Performance:
+  - Route metadata across all pages.
+  - `src/app/sitemap.ts` and `src/app/robots.ts` generated.
+  - Static prerendering verified for all 14 routes.
 
 ---
 
-### Phase 2 — Authentication & Multi-Tenant Organization Management
+### Phase 2 — Authentication & Multi-Tenant Organization Management (UP NEXT)
 - [ ] NextAuth / Auth.js implementation with secure session management.
 - [ ] Multi-tenant isolation engine:
   - User registration & clinic setup wizard (`/signup`, `/onboarding`).
